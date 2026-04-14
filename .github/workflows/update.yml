@@ -24,7 +24,7 @@ jobs:
           pip install requests beautifulsoup4 pandas openpyxl
 
       - name: Run parser script
-        run: python main.py # Замени на имя своего главного скрипта, если оно другое
+        run: python parser.py
 
       - name: Commit and push changes
         run: |
