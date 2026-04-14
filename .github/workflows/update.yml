@@ -13,7 +13,7 @@ jobs:
         with:
           python-version: '3.9'
       - name: Install dependencies
-        run: pip install pandas openpyxl
+        run: pip install pandas openpyxl requests
       - name: Run parser
         run: python parser.py
       - name: Push changes
@@ -21,5 +21,13 @@ jobs:
           git config --global user.name "GitHub Action"
           git config --global user.email "action@github.com"
           git add data.json
-          git commit -m "Auto-update" || exit 0
+          git commit -m "Auto-update data.json" || exit 0
           git push
+      - name: Send Telegram Notification
+        env:
+          TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          curl -s -X POST https://api.telegram.org/bot$TOKEN/sendMessage \
+          -d chat_id=$CHAT_ID \
+          -d text="✅ Расписание успешно обновлено! Новые данные уже загружены."
